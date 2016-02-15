@@ -1,0 +1,48 @@
+<br />
+<div class="row">
+    <div class="small-5 columns">
+        <h3 id="turn_order_header">Turn Order</h3>
+        <ol>
+            <li><input id="miracle_disaster_check" type="checkbox"> Implement Miracle/Disaster card effect </li>
+            <li><input id="reserve_check" type="checkbox"> Add reserve generated units <a href="#" id="add_generated_units_button" class="button small" onclick="add_reserve_generated_units();">Add</a></li>
+            <li> <input id="resource_add_check" type="checkbox"> Increase resources from gathering</li>
+            <li>
+                <input id="resource_sub_check" type="checkbox"> Decrease resources based on usage 
+                <br />
+                <div class="row">
+                <div class="small-offset-2 small-4 columns">
+                   <a href="#" class="button small" onclick="nurish_units();">Nourish Units</a>
+                </div>
+                <div class="small-6 columns">
+                   <p id="toDie_msg"></p>
+                </div>
+            </div>
+               
+            </li>
+            <li><input id="play_check" type="checkbox"> Play </li>
+        </ol>
+        <a href="#" id="complete_turn_button" class="button small" onclick="complete_turn();">Complete turn</a>
+    </div>
+    <div class="small-7 columns verticalLine">
+        
+        <!--TURNS-->
+        <%= turns_display %>
+        <br />
+        <!--FOOD-->
+        <%= render 'resource_section', type: "food", values: [1, 10, 100] %>
+        <br />
+        <!--WATER-->
+        <%= render 'resource_section', type: "water", values: [1, 10, 100] %>
+        <br />
+        <!--ORE-->
+        <%= render 'resource_section', type: "ore", values: [1, 10, 100] %>
+        <br />
+        <!--UNITS-->
+        <%= render 'resource_section', type: "unit", values: [1, 5] %>
+        <br />
+        <!--UNIT RESERVE-->
+        <%= render 'resource_section', type: "reserve", values: [1, 5] %>
+        <%= generation_display %>
+        <br />
+    </div>
+</div>
