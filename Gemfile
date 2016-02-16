@@ -48,3 +48,6 @@ end
 # Front end
 gem 'foundation-rails', '~> 5.5.3.2'
 
+# Server - Heroku
+gem 'rails_12factor', group: :production
+
