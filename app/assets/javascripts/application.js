@@ -17,7 +17,7 @@
 //= require_tree .
 
 
-var score = { turns_count: 0, food_count: 0, water_count: 0, ore_count: 0, unit_count: 0, unit_reserve_count: 0, unit_reserve_generation_count: 0 };
+var score = { server_id: 0, turns_count: 0, food_count: 0, water_count: 0, ore_count: 0, unit_count: 0, unit_reserve_count: 0, unit_reserve_generation_count: 0 };
 
     var FOOD = "food", 
         WATER = "water",
@@ -102,23 +102,23 @@ function complete_turn(){
     
     if (!$('#play_check').is(':checked')){
         valid = false;
-        turn_error("Must verify you played.")
+        turn_error("Must verify you played.");
     }
     if (!$('#resource_sub_check').is(':checked')){
         valid = false;
-        turn_error("Must verify that resources used.")
+        turn_error("Must verify that resources used.");
     }
     if (!$('#resource_add_check').is(':checked')){
         valid = false;
-        turn_error("Must verify that resources gathered.")
+        turn_error("Must verify that resources gathered.");
     }
     if (!$('#reserve_check').is(':checked')){
         valid = false;
-        turn_error("Must verify that added units from reserve.")
+        turn_error("Must verify that added units from reserve.");
     }
     if (!$('#miracle_disaster_check').is(':checked')){
         valid = false;
-        turn_error("Must verify miracle/disaster effect implemented.")
+        turn_error("Must verify miracle/disaster effect implemented.");
     }
     if(valid){
         $('#miracle_disaster_check').prop('checked', false);
@@ -130,7 +130,83 @@ function complete_turn(){
         document.getElementById(TURNS).innerHTML = score.turns_count;
         document.getElementById("toDie_msg").innerHTML = "";
     }
+    if(score.server_id != 0)
+    {
+       $.ajax({
+            url: "/scores/" + score.server_id,
+            type: "PATCH",
+            data: { score: {
+                     id: score.server_id,
+                     turns: score.turns_count, 
+                     food: score.food_count,
+                     water: score.water_count, 
+                     ore: score.ore_count, 
+                     units: score.unit_count, 
+                     reserve: score.unit_reserve_count, 
+                     unit_reserve_generation: score.unit_reserve_generation_count }},
+            success: function(resp){ 
+                score.server_id = resp.id
+                document.getElementById("server_id").innerHTML = "Your game ID is: " + score.server_id
+                document.getElementById("result").innerHTML = resp.result
+            }    
+        });
+    }
+    else{
+      $.ajax({
+    url: "/scores",
+    type: "POST",
+    data: { score: {
+             turns: score.turns_count, 
+             food: score.food_count,
+             water: score.water_count, 
+             ore: score.ore_count, 
+             units: score.unit_count, 
+             reserve: score.unit_reserve_count, 
+             unit_reserve_generation: score.unit_reserve_generation_count }},
+    success: function(resp){ 
+        score.server_id = resp.id
+        document.getElementById("server_id").innerHTML = "Your game ID is: " + score.server_id
+        document.getElementById("result").innerHTML = resp.result
+    }  
+    });
+    
+}
 };
+
+function getFromServer(){
+    if (!$('#find_game').value == null){
+        turn_error("Must enter a game ID.");
+    }
+    else
+    {
+        var id = $('#find_game').val();
+        $.ajax({
+            url: "/scores/" + id,
+            type: "GET",
+            success: function(resp){ 
+                score.server_id = resp.id
+                document.getElementById("server_id").innerHTML = "Your game ID is: " + score.server_id;
+                document.getElementById("result").innerHTML = resp.result;
+                score.turns_count = resp.turns;
+                score.food_count = resp.food;
+                score.water_count = resp.water;
+                score.ore_count = resp.ore;
+                score.unit_count = resp.units;
+                score.unit_reserve_count = resp.reserve;
+                score.unit_reserve_generation_count = resp.unit_reserve_generation;
+                document.getElementById(TURNS).innerHTML = score.turns_count;
+                adjust(FOOD, 0);
+                adjust(WATER, 0);
+                adjust(ORE, 0);
+                adjust(UNIT, 0);
+                adjust(RESERVE, 0);
+                adjust(GENERATION, 0);
+                $('#restore_game').foundation('reveal', 'close');
+            }  
+        });
+    }
+};
+
 
 function turn_error(error){
   $( "<p class='error', style='color:red;'>Error: " + error +"</p>" ).insertAfter( "#turn_order_header" );  
