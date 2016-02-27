@@ -1,28 +1,24 @@
-== README
+== Return Calculator
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This application is a tool for making Return easier and faster to play by 
+simplifying the mathematics and maintaining all resource levels electronically.
 
-Things you may want to cover:
+Features:
 
-* Ruby version
+* Web based - use on any web enabled device
 
-* System dependencies
+* Touch screen friendly
 
-* Configuration
+* Checklist for turns
 
-* Database creation
+* Turn and resource tracker
 
-* Database initialization
+* Auto compute unit death (due to lack of resources) plus auto adjust
 
-* How to run the test suite
+* Save and restore game progress
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* Built with Ruby on Rails and JS
 
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+
+Visit the app at: http://returnapp.herokuapp.com/
