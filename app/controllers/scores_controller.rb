@@ -5,7 +5,7 @@ class ScoresController < ApplicationController
       if @score.save
         render :json => { id: @score.id, result: "Saved." } 
       else
-        render :json => { id: "None", result: "Could not save." }, :status => 500
+        render :json => { id: "None", result: "Could not save." }
       end
     end
     
@@ -14,12 +14,12 @@ class ScoresController < ApplicationController
         if @score.update(score_params)
             render :json => { id: @score.id, result: "Updated to turn #{@score.turns}." } 
         else
-            render :json => { id: @score.id, result: "Could not save." }, :status => 500
+            render :json => { id: @score.id, result: "Could not save." }
         end
     end
     
     def show
-        @score = Score.find_by_id(params[:id])
+        @score = Score.find_by(id: params[:id])
         if(@score != nil)
             render :json => { 
             id: @score.id,    
@@ -33,7 +33,7 @@ class ScoresController < ApplicationController
             result: "Restore successful!"
             }
         else
-           render :json => { id: "None", result: "Could not find save for #{params[:id]}." }, :status => 500 
+           render :json => { id: "None", result: "Could not find save for id: #{params[:id]}." }
         end
     end
     
